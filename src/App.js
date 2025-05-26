@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // ... rest of your dashboard code here (Midshift)
 export default function App() {
   // (imong dashboard code content)
-}import React, { useState } from "react";
+import React, { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
