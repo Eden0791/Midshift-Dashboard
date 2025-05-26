@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-// ... rest of your dashboard code here (Midshift)
-export default function App() {
-  // (imong dashboard code content)
-import React, { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+
+// You can use any UI kit you like, I removed custom UI components for simplicity
 
 const pastelColors = [
   "#FDA4AF", // Pink
@@ -20,40 +15,13 @@ const months = [
   "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05"
 ];
 
-// Replace with extracted MPL data for each MA (sample only; use your actual counts)
+// Example data
 const MPL_DATA = {
   "Sheila Mae Genodia":    [2, 3, 1, 0, 2, 1, 2, 1],
   "Julius Fernandez":      [1, 2, 1, 0, 1, 2, 1, 0],
   "Kahlynne Garganera":   [1, 2, 0, 1, 2, 2, 1, 1],
   "Rhay Mark":            [3, 2, 2, 1, 0, 2, 1, 1],
 };
-
-const MPL_LOGS = {
-  "Sheila Mae Genodia": [
-    { month: "2024-10", date: "2024-10-03", description: "Wrong intervention email", status: "Closed" },
-    { month: "2024-11", date: "2024-11-11", description: "Missed event log", status: "Open" },
-    // dugangi pa girlie as needed
-  ],
-  "Julius Fernandez": [
-    { month: "2024-10", date: "2024-10-07", description: "Late intervention", status: "Closed" },
-    // add more logs if naa pa
-  ],
-  "Kahlynne Garganera": [
-    { month: "2024-10", date: "2024-10-09", description: "Incorrect vessel identification", status: "Closed" },
-    // add more logs if naa pa
-  ],
-  "Rhay Mark": [
-    { month: "2024-10", date: "2024-10-05", description: "Missed monitoring alert", status: "Open" },
-    // add more logs if naa pa
-  ]
-};
-
-// Michaelo TPL logs (sample)
-const TPL_LOGS_MICHAELO = [
-  { month: "2025-03", date: "2025-03-15", description: "Incorrect template usage", status: "Closed" },
-  { month: "2025-04", date: "2025-04-02", description: "Missed entry", status: "Open" },
-  // add more logs as needed
-];
 
 const TPL_MICHAELO = [2, 3, 1]; // March, April, May
 const TPL_MONTHS = ["2025-03", "2025-04", "2025-05"];
@@ -69,36 +37,7 @@ function getMplStats(data) {
   return { total, bestMonth, worstMonth, min, max };
 }
 
-// Cute table for logs per user
-function LogTable({ logs }) {
-  if (!logs?.length) return <div className="text-center text-sm text-gray-400">No logs found for this period.</div>;
-  return (
-    <div className="overflow-x-auto rounded-xl shadow mb-6">
-      <table className="min-w-full text-left text-xs border border-gray-200 bg-white/90 rounded-xl">
-        <thead>
-          <tr className="bg-pink-100 text-pink-800">
-            <th className="py-2 px-4 font-semibold">Date</th>
-            <th className="py-2 px-4 font-semibold">Month</th>
-            <th className="py-2 px-4 font-semibold">Description</th>
-            <th className="py-2 px-4 font-semibold">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {logs.map((log, idx) => (
-            <tr key={idx} className="hover:bg-indigo-50 transition">
-              <td className="py-2 px-4">{log.date}</td>
-              <td className="py-2 px-4">{log.month.replace("2024-","'24-").replace("2025-","'25-")}</td>
-              <td className="py-2 px-4">{log.description}</td>
-              <td className="py-2 px-4">{log.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-export default function MidshiftDashboard() {
+export default function App() {
   const [selectedMA, setSelectedMA] = useState("Dashboard");
 
   // Prepare line data for dashboard
@@ -111,121 +50,118 @@ export default function MidshiftDashboard() {
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-pink-100 to-indigo-100 py-8 px-4">
-      <motion.h1 initial={{ opacity: 0, y: -24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-3xl font-extrabold text-center mb-2">
-        🌈 Midshift MPL Dashboard <span className="text-base text-gray-500">(Oct 2024 – May 2025)</span>
-      </motion.h1>
+    <main style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #fde4cf, #a5b4fc)', padding: 32 }}>
+      <h1 style={{ fontSize: 32, fontWeight: 800, textAlign: 'center', marginBottom: 16 }}>
+        🌈 Midshift MPL Dashboard <span style={{ fontSize: 18, color: '#7a7a7a' }}>(Oct 2024 – May 2025)</span>
+      </h1>
 
-      <div className="flex justify-center gap-2 mb-8 flex-wrap">
-        <Button onClick={() => setSelectedMA("Dashboard")} variant={selectedMA === "Dashboard" ? "default" : "outline"} className="rounded-full text-base px-4">Dashboard</Button>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 32, flexWrap: 'wrap' }}>
+        <button onClick={() => setSelectedMA("Dashboard")} style={{ borderRadius: 99, padding: '8px 24px', fontWeight: 600, border: selectedMA === "Dashboard" ? 'none' : '1px solid #a5b4fc', background: selectedMA === "Dashboard" ? '#a5b4fc' : 'white', color: selectedMA === "Dashboard" ? '#fff' : '#333', cursor: 'pointer' }}>Dashboard</button>
         {MA_LIST.map((ma, i) => (
-          <Button
+          <button
             key={ma}
             onClick={() => setSelectedMA(ma)}
-            variant={selectedMA === ma ? "default" : "outline"}
-            className="rounded-full text-base px-4"
-            style={{ backgroundColor: selectedMA === ma ? pastelColors[i % pastelColors.length] : undefined }}
+            style={{
+              borderRadius: 99,
+              padding: '8px 24px',
+              fontWeight: 600,
+              background: selectedMA === ma ? pastelColors[i % pastelColors.length] : 'white',
+              border: selectedMA === ma ? 'none' : `1px solid ${pastelColors[i % pastelColors.length]}`,
+              color: selectedMA === ma ? '#333' : '#333',
+              cursor: 'pointer'
+            }}
           >
             {ma.split(" ")[0]}
-          </Button>
+          </button>
         ))}
-        <Button onClick={() => setSelectedMA("Michaelo Paler")}
-          variant={selectedMA === "Michaelo Paler" ? "default" : "outline"} className="rounded-full text-base px-4"
-          style={{ backgroundColor: selectedMA === "Michaelo Paler" ? pastelColors[4] : undefined }}>
+        <button onClick={() => setSelectedMA("Michaelo Paler")}
+          style={{
+            borderRadius: 99,
+            padding: '8px 24px',
+            fontWeight: 600,
+            background: selectedMA === "Michaelo Paler" ? pastelColors[4] : 'white',
+            border: selectedMA === "Michaelo Paler" ? 'none' : `1px solid ${pastelColors[4]}`,
+            color: selectedMA === "Michaelo Paler" ? '#333' : '#333',
+            cursor: 'pointer'
+          }}>
           Michaelo (TPL)
-        </Button>
+        </button>
       </div>
 
       {/* Dashboard */}
       {selectedMA === "Dashboard" && (
-        <Card className="max-w-4xl mx-auto p-6 mb-6 rounded-2xl shadow-md">
-          <CardContent>
-            <h2 className="text-xl font-semibold mb-2 text-pink-700">MPL Logs Overview</h2>
-            <ResponsiveContainer width="100%" height={320}>
-              <LineChart data={dashboardData} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Legend />
-                {MA_LIST.map((ma, idx) => (
-                  <Line key={ma} type="monotone" dataKey={ma} stroke={pastelColors[idx % pastelColors.length]} strokeWidth={3} dot={{ r: 6 }} activeDot={{ r: 8 }} />
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
-            <div className="flex flex-wrap gap-4 mt-6 justify-center">
-              {MA_LIST.map((ma, i) => {
-                const stats = getMplStats(MPL_DATA[ma]);
-                return (
-                  <Card key={ma} className="p-4 w-64 rounded-2xl shadow bg-white/80">
-                    <CardContent>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-lg font-bold" style={{ color: pastelColors[i % pastelColors.length] }}>{ma.split(" ")[0]}</span>
-                      </div>
-                      <div className="text-sm mb-1">Total Logs: <span className="font-semibold">{stats.total}</span></div>
-                      <div className="text-sm">Best Month: <span className="font-semibold text-green-600">{stats.bestMonth.replace('2024-','').replace('2025-','')}</span></div>
-                      <div className="text-sm">Challenging Month: <span className="font-semibold text-rose-600">{stats.worstMonth.replace('2024-','').replace('2025-','')}</span></div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+        <div style={{ maxWidth: 900, margin: '0 auto', background: '#fff9', padding: 24, borderRadius: 24, boxShadow: '0 2px 16px #e2e8f0', marginBottom: 24 }}>
+          <h2 style={{ fontSize: 22, fontWeight: 600, color: '#be185d', marginBottom: 12 }}>MPL Logs Overview</h2>
+          <ResponsiveContainer width="100%" height={320}>
+            <LineChart data={dashboardData} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Legend />
+              {MA_LIST.map((ma, idx) => (
+                <Line key={ma} type="monotone" dataKey={ma} stroke={pastelColors[idx % pastelColors.length]} strokeWidth={3} dot={{ r: 6 }} activeDot={{ r: 8 }} />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+          <div style={{ display: 'flex', gap: 18, marginTop: 24, justifyContent: 'center', flexWrap: 'wrap' }}>
+            {MA_LIST.map((ma, i) => {
+              const stats = getMplStats(MPL_DATA[ma]);
+              return (
+                <div key={ma} style={{ background: '#fff', borderRadius: 18, boxShadow: '0 1px 8px #e0e7ef', padding: 18, minWidth: 220 }}>
+                  <div style={{ fontWeight: 700, color: pastelColors[i % pastelColors.length], fontSize: 20 }}>{ma.split(" ")[0]}</div>
+                  <div style={{ fontSize: 15, margin: '8px 0 2px 0' }}>Total Logs: <span style={{ fontWeight: 600 }}>{stats.total}</span></div>
+                  <div style={{ fontSize: 14 }}>Best Month: <span style={{ fontWeight: 600, color: '#22c55e' }}>{stats.bestMonth.replace('2024-','').replace('2025-','')}</span></div>
+                  <div style={{ fontSize: 14 }}>Challenging Month: <span style={{ fontWeight: 600, color: '#ef4444' }}>{stats.worstMonth.replace('2024-','').replace('2025-','')}</span></div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
 
       {/* Individual MA Tabs */}
       {MA_LIST.map((ma, idx) => (
         selectedMA === ma && (
-          <motion.div key={ma} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Card className="max-w-xl mx-auto p-6 rounded-2xl shadow-md mb-6">
-              <CardContent>
-                <h2 className="text-xl font-semibold mb-4" style={{ color: pastelColors[idx % pastelColors.length] }}>{ma}</h2>
-                <LogTable logs={MPL_LOGS[ma]} />
-                <ResponsiveContainer width="100%" height={230}>
-                  <LineChart data={months.map((m, i) => ({ month: m, logs: MPL_DATA[ma][i] }))}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis allowDecimals={false} />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="logs" stroke={pastelColors[idx % pastelColors.length]} strokeWidth={4} dot={{ r: 7 }} activeDot={{ r: 10 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-                <div className="mt-4 text-center">
-                  <div className="text-lg font-semibold">Total Logs: {getMplStats(MPL_DATA[ma]).total}</div>
-                  <div className="text-sm">Best Month: <span className="text-green-600">{getMplStats(MPL_DATA[ma]).bestMonth.replace('2024-','').replace('2025-','')}</span></div>
-                  <div className="text-sm">Challenging Month: <span className="text-rose-600">{getMplStats(MPL_DATA[ma]).worstMonth.replace('2024-','').replace('2025-','')}</span></div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div key={ma} style={{ maxWidth: 650, margin: '0 auto', background: '#fff9', padding: 24, borderRadius: 24, boxShadow: '0 2px 16px #e2e8f0', marginBottom: 24 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 600, color: pastelColors[idx % pastelColors.length] }}>{ma}</h2>
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={months.map((m, i) => ({ month: m, logs: MPL_DATA[ma][i] }))}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Line type="monotone" dataKey="logs" stroke={pastelColors[idx % pastelColors.length]} strokeWidth={4} dot={{ r: 7 }} activeDot={{ r: 10 }} />
+              </LineChart>
+            </ResponsiveContainer>
+            <div style={{ marginTop: 18, textAlign: 'center' }}>
+              <div style={{ fontSize: 18, fontWeight: 600 }}>Total Logs: {getMplStats(MPL_DATA[ma]).total}</div>
+              <div style={{ fontSize: 14 }}>Best Month: <span style={{ color: '#22c55e' }}>{getMplStats(MPL_DATA[ma]).bestMonth.replace('2024-','').replace('2025-','')}</span></div>
+              <div style={{ fontSize: 14 }}>Challenging Month: <span style={{ color: '#ef4444' }}>{getMplStats(MPL_DATA[ma]).worstMonth.replace('2024-','').replace('2025-','')}</span></div>
+            </div>
+          </div>
         )
       ))}
 
       {/* Michaelo Paler (TPL) Tab */}
       {selectedMA === "Michaelo Paler" && (
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <Card className="max-w-xl mx-auto p-6 rounded-2xl shadow-md">
-            <CardContent>
-              <h2 className="text-xl font-semibold mb-4 text-yellow-600">Michaelo Paler – TPL</h2>
-              <LogTable logs={TPL_LOGS_MICHAELO} />
-              <ResponsiveContainer width="100%" height={230}>
-                <LineChart data={TPL_MONTHS.map((m, i) => ({ month: m, logs: TPL_MICHAELO[i] }))}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis allowDecimals={false} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="logs" stroke={pastelColors[4]} strokeWidth={4} dot={{ r: 7 }} activeDot={{ r: 10 }} />
-                </LineChart>
-              </ResponsiveContainer>
-              <div className="mt-4 text-center">
-                <div className="text-lg font-semibold">Total Logs: {TPL_MICHAELO.reduce((a, b) => a + b, 0)}</div>
-                <div className="text-sm">Best Month: <span className="text-green-600">{TPL_MONTHS[TPL_MICHAELO.indexOf(Math.min(...TPL_MICHAELO))].replace('2025-','')}</span></div>
-                <div className="text-sm">Challenging Month: <span className="text-rose-600">{TPL_MONTHS[TPL_MICHAELO.indexOf(Math.max(...TPL_MICHAELO))].replace('2025-','')}</span></div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        <div style={{ maxWidth: 650, margin: '0 auto', background: '#fff9', padding: 24, borderRadius: 24, boxShadow: '0 2px 16px #e2e8f0' }}>
+          <h2 style={{ fontSize: 22, fontWeight: 600, color: '#facc15' }}>Michaelo Paler – TPL</h2>
+          <ResponsiveContainer width="100%" height={280}>
+            <LineChart data={TPL_MONTHS.map((m, i) => ({ month: m, logs: TPL_MICHAELO[i] }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Line type="monotone" dataKey="logs" stroke={pastelColors[4]} strokeWidth={4} dot={{ r: 7 }} activeDot={{ r: 10 }} />
+            </LineChart>
+          </ResponsiveContainer>
+          <div style={{ marginTop: 18, textAlign: 'center' }}>
+            <div style={{ fontSize: 18, fontWeight: 600 }}>Total Logs: {TPL_MICHAELO.reduce((a, b) => a + b, 0)}</div>
+            <div style={{ fontSize: 14 }}>Best Month: <span style={{ color: '#22c55e' }}>{TPL_MONTHS[TPL_MICHAELO.indexOf(Math.min(...TPL_MICHAELO))].replace('2025-','')}</span></div>
+            <div style={{ fontSize: 14 }}>Challenging Month: <span style={{ color: '#ef4444' }}>{TPL_MONTHS[TPL_MICHAELO.indexOf(Math.max(...TPL_MICHAELO))].replace('2025-','')}</span></div>
+          </div>
+        </div>
       )}
     </main>
   );
